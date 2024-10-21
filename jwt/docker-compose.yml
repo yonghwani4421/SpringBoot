@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234!
+      MYSQL_DATABASE: jwt
+    ports:
+      - "3306:3306"
+    volumes:
+      - C:\workspace\mysql-data:/var/lib/mysql
+volumes:
+  mysql-data:
