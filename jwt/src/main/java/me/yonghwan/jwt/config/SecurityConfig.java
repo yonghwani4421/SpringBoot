@@ -1,7 +1,9 @@
 package me.yonghwan.jwt.config;
 
 import lombok.RequiredArgsConstructor;
-import me.yonghwan.jwt.filter.LoginFilter;
+import me.yonghwan.jwt.jwt.JWTUtil;
+import me.yonghwan.jwt.jwt.JwtFilter;
+import me.yonghwan.jwt.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,6 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
+    private final JWTUtil jwtUtil;
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws  Exception{
@@ -46,9 +49,11 @@ public class SecurityConfig {
                 .requestMatchers("/admin").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
+        http
+                .addFilterBefore(new JwtFilter(jwtUtil), LoginFilter.class);
         // LoginFilter 추가
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration)), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration),jwtUtil), UsernamePasswordAuthenticationFilter.class);
         // 세션을 stateless 상태로 관리해야함
         http.sessionManagement((session) -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS));

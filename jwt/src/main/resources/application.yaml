@@ -17,6 +17,8 @@ spring:
     hibernate:
 #      ddl-auto: update
       ddl-auto: none
+#  jwt:
+#    secret: dsklfjlsdkjflasdjflsajdflksjdflkjsldfkjlksjdflkjsdflkjsdflkjsdlkfjlkjlkbbbbbbbbbb
 jwt:
-  issuer: ghks4421@gmail.com
+  issuer: yonghwankim
   secret_key: study-springboot
