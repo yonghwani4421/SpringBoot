@@ -13,8 +13,8 @@ import java.util.Date;
 
 @Entity
 // 테이블 이름 매핑
-//@Table(name = "users")
-public class Member {
+@Table(name = "member_mapping")
+public class Member1 {
     @Id
     private Long id;
     @Column(name = "name", updatable = false, nullable = false, columnDefinition = "varchar(100)")
@@ -56,7 +56,7 @@ public class Member {
         this.roleType = roleType;
     }
 
-    public Member() {
+    public Member1() {
     }
 
 }
