@@ -1,0 +1,47 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.db
+*.log
+*.out
+*.sql
+*.class
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+*.project
+*.classpath
+
+# Build directories
+/build/
+target/
+out/
+bin/
+
+# Dependency directories
+/.m2/
+.gradle/
+build/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Other
+*.log
+*.tmp
+*.bak
+*.orig
+*.coverage
+coverage/
+*.stackdump
+
+# Environment variables
+.env
+
