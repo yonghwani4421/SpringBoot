@@ -11,19 +11,21 @@ import java.util.List;
  * @PARAM
  * @VERSION 1.0
  */
-@Entity
-public class Team {
 
+@Entity
+public class Product
+{
     @Id @GeneratedValue
-    @Column(name = "TEAM_ID")
     private Long id;
 
     private String name;
 
-    // 데이터 읽기만 가능
-    @OneToMany
-    @JoinColumn(name = "TEAM_ID")
-    private List<Member> members = new ArrayList<>();
+//    @ManyToMany(mappedBy = "products")
+//    private List<Member> members = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product")
+    private List<MemberProduct> memberProducts = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -39,13 +41,5 @@ public class Team {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Member> getMembers() {
-        return members;
-    }
-
-    public void setMembers(List<Member> members) {
-        this.members = members;
     }
 }

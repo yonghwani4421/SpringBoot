@@ -32,7 +32,7 @@ public class Ex2Main {
 
             Member member = new Member();
             member.setUsername("Member1");
-            member.changeTeam(team);
+//            member.changeTeam(team);
             em.persist(member);
 
             // 양방향 연관관계에서는 양쪽에 값을 전부 세팅하는게 좋다.

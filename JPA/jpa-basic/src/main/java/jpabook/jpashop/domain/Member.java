@@ -2,6 +2,9 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @AUTHOR dyd71
  * @DATE 2024-10-23
@@ -18,6 +21,10 @@ public class Member {
     private String name;
     private String city;
     private String zipcode;
+
+
+    @OneToMany(mappedBy = "member")
+    private List<Order> orders = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -49,5 +56,13 @@ public class Member {
 
     public void setZipcode(String zipcode) {
         this.zipcode = zipcode;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 }

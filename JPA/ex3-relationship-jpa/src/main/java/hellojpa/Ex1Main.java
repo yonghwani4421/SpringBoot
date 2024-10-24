@@ -26,29 +26,29 @@ public class Ex1Main {
 
         try{
 
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setUsername("Member1");
-            member.setTeam(team);
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-
-            Member findMember = em.find(Member.class, member.getId());
-            Team team1 = findMember.getTeam();
-
-            System.out.println("team1 = " + team1.getName());
-
-            List<Member> members = findMember.getTeam().getMembers();
-
-            for (Member m : members) {
-                System.out.println("m = " + m.getUsername());
-            }
+//            Team team = new Team();
+//            team.setName("TeamA");
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setUsername("Member1");
+////            member.setTeam(team);
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            Member findMember = em.find(Member.class, member.getId());
+//            Team team1 = findMember.getTeam();
+//
+//            System.out.println("team1 = " + team1.getName());
+//
+//            List<Member> members = findMember.getTeam().getMembers();
+//
+//            for (Member m : members) {
+//                System.out.println("m = " + m.getUsername());
+//            }
 
             tx.commit();
         } catch (Exception e) {
