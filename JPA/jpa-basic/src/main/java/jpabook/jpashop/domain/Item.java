@@ -2,6 +2,9 @@ package jpabook.jpashop.domain;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @AUTHOR dyd71
  * @DATE 2024-10-23
@@ -17,6 +20,10 @@ public class Item {
     private String name;
     private int price;
     private int stockQuantity;
+
+    @ManyToMany(mappedBy = "items")
+    private List<Category> categories = new ArrayList<>();
+
 
     public Long getId() {
         return id;
