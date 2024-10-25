@@ -10,7 +10,7 @@ import jpabook.jpashop.DeliveryStatus;
  * @VERSION 1.0
  */
 @Entity
-public class Delivery {
+public class Delivery extends BaseEntity{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
