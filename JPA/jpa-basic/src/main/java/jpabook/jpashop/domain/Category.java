@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.FetchType.*;
+
 /**
  * @AUTHOR dyd71
  * @DATE 2024-10-24
@@ -18,7 +20,7 @@ public class Category extends BaseEntity{
     private Long id;
 
     private String name;
-    @ManyToOne
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "PARENT_ID")
     private Category parent;
 
