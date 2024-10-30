@@ -1,4 +1,4 @@
-package jpql;
+package jpql.ex;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -15,7 +15,7 @@ import java.util.List;
  * @PARAM
  * @VERSION 1.0
  */
-public class IfEx {
+public class JoinEx {
     public static void main(String[] args) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
@@ -35,7 +35,7 @@ public class IfEx {
 
 
             Member member = new Member();
-            member.setUsername("관리자");
+            member.setUsername("member1");
             member.setAge(10);
             member.chnageTeam(team);
 
@@ -46,23 +46,12 @@ public class IfEx {
 
 
 
-//            String query = "select " +
-//                                "case when m.age <= 10 then '학생요금'" +
-//                                "     when m.age >= 60 then '경로요금'" +
-//                                "     else '일반요금' " +
-//                                "end " +
-//                    "from Member m";
+//            String query = "select m from Member m inner join m.team t";
+//            String query = "select m from Member m left join m.team t";
+//            String query = "select m from Member m, Team t where m.username = t.name ";
+            String query = "select m from Member m left join Team t on m.username = t.name ";
+            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
 
-//            String query = "select coalesce(m.username,'이름 없는 회원') as username " +
-//                    "from Member m";
-
-            String query = "select NULLIF(m.username,'관리자') as  " +
-                    "from Member m";
-            List<String> resultList = em.createQuery(query, String.class).getResultList();
-
-            for (String s : resultList) {
-                System.out.println("s = " + s);
-            }
 
 
             tx.commit();

@@ -1,15 +1,13 @@
-package jpql;
+package jpql.ex;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import jpql.domain.Member;
-import jpql.domain.MemberType;
 import jpql.domain.Team;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @AUTHOR dyd71
@@ -17,7 +15,7 @@ import java.util.Objects;
  * @PARAM
  * @VERSION 1.0
  */
-public class SubQueryEx {
+public class IfEx {
     public static void main(String[] args) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
@@ -37,9 +35,8 @@ public class SubQueryEx {
 
 
             Member member = new Member();
-            member.setUsername("member1");
+            member.setUsername("관리자");
             member.setAge(10);
-            member.setMemberType(MemberType.ADMIN);
             member.chnageTeam(team);
 
             em.persist(member);
@@ -48,19 +45,25 @@ public class SubQueryEx {
             em.clear();
 
 
-            String query = "select m.username, 'HELLO', true from Member m " +
-                    "where m.type = :userType";
-            List<Object[]> resultList = em.createQuery(query)
-                    .setParameter("userType",MemberType.ADMIN)
-                    .getResultList();
 
-            System.out.println("size : " + resultList.size());
+//            String query = "select " +
+//                                "case when m.age <= 10 then '학생요금'" +
+//                                "     when m.age >= 60 then '경로요금'" +
+//                                "     else '일반요금' " +
+//                                "end " +
+//                    "from Member m";
 
-            for (Object[] objects : resultList) {
-                System.out.println("objects = " + objects[0]);
-                System.out.println("objects = " + objects[1]);
-                System.out.println("objects = " + objects[2]);
+//            String query = "select coalesce(m.username,'이름 없는 회원') as username " +
+//                    "from Member m";
+
+            String query = "select NULLIF(m.username,'관리자') as  " +
+                    "from Member m";
+            List<String> resultList = em.createQuery(query, String.class).getResultList();
+
+            for (String s : resultList) {
+                System.out.println("s = " + s);
             }
+
 
             tx.commit();
         } catch (Exception e) {

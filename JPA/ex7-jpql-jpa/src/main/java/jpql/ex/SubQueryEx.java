@@ -1,13 +1,15 @@
-package jpql;
+package jpql.ex;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
 import jpql.domain.Member;
+import jpql.domain.MemberType;
 import jpql.domain.Team;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @AUTHOR dyd71
@@ -15,7 +17,7 @@ import java.util.List;
  * @PARAM
  * @VERSION 1.0
  */
-public class JoinEx {
+public class SubQueryEx {
     public static void main(String[] args) {
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
@@ -37,6 +39,7 @@ public class JoinEx {
             Member member = new Member();
             member.setUsername("member1");
             member.setAge(10);
+            member.setMemberType(MemberType.ADMIN);
             member.chnageTeam(team);
 
             em.persist(member);
@@ -45,14 +48,19 @@ public class JoinEx {
             em.clear();
 
 
+            String query = "select m.username, 'HELLO', true from Member m " +
+                    "where m.type = :userType";
+            List<Object[]> resultList = em.createQuery(query)
+                    .setParameter("userType",MemberType.ADMIN)
+                    .getResultList();
 
-//            String query = "select m from Member m inner join m.team t";
-//            String query = "select m from Member m left join m.team t";
-//            String query = "select m from Member m, Team t where m.username = t.name ";
-            String query = "select m from Member m left join Team t on m.username = t.name ";
-            List<Member> resultList = em.createQuery(query, Member.class).getResultList();
+            System.out.println("size : " + resultList.size());
 
-
+            for (Object[] objects : resultList) {
+                System.out.println("objects = " + objects[0]);
+                System.out.println("objects = " + objects[1]);
+                System.out.println("objects = " + objects[2]);
+            }
 
             tx.commit();
         } catch (Exception e) {

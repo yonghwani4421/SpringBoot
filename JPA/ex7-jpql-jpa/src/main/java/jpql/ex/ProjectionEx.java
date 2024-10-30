@@ -1,4 +1,4 @@
-package jpql;
+package jpql.ex;
 
 import jakarta.persistence.*;
 import jpql.domain.Member;
