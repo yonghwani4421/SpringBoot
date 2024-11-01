@@ -19,6 +19,7 @@ public class OrderRepository {
 
     public void save(Order order) {
         em.persist(order);
+        em.flush();
     }
 
     public Order findOne(Long id) {
@@ -29,8 +30,12 @@ public class OrderRepository {
     public List<Order> findAll(OrderSearch orderSearch) {
 
         // query dsl 사용 하여 해결할 것
-        return em.createQuery("select o from Order o join o.member m" + "where o.status = :status" + "and m.name like :name", Order.class).setParameter("status", orderSearch.getOrderStatus()).setParameter("name", orderSearch.getMemberName()).setMaxResults(1000).getResultList();
+//        return em.createQuery("select o from Order o join o.Member m where o.status = :status and m.name like :name", Order.class)
+//                .setParameter("status", orderSearch.getOrderStatus())
+//                .setParameter("name", orderSearch.getMemberName())
+//                .setMaxResults(1000).getResultList();
 
+        return em.createQuery("select o from Order o join member m").setMaxResults(1000).getResultList();
     }
 
     /**
