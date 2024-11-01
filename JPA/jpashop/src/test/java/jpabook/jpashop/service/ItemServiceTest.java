@@ -38,4 +38,20 @@ public class ItemServiceTest {
 //        em.flush();
         assertEquals(book, itemRepository.findOne(book.getId()));
     }
+    @Test
+    @DisplayName("상품리스트 조회")
+    public void 상품리스트조회() throws Exception{
+        // given
+        Book book = new Book();
+        book.setAuthor("작가");
+        book.setIsbn("1234");
+
+        // when
+        itemService.saveItem(book);
+
+        // then
+//        em.flush();
+        assertEquals(book, itemRepository.findAll().get(0));
+    }
+
 }
