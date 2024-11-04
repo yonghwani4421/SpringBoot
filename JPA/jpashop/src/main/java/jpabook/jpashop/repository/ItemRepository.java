@@ -1,6 +1,7 @@
 package jpabook.jpashop.repository;
 
 import jakarta.persistence.EntityManager;
+import jpabook.jpashop.domain.item.Book;
 import jpabook.jpashop.domain.item.Item;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -25,6 +26,7 @@ public class ItemRepository {
         return em.find(Item.class, id);
     }
     public List<Item> findAll(){
-        return em.createQuery("select i from item i", Item.class).getResultList();
+        return em.createQuery("select i from Item i", Item.class)
+                .getResultList();
     }
 }
