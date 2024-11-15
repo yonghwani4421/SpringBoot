@@ -13,6 +13,7 @@ import study.data_jpa.entity.Team;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -178,6 +179,25 @@ class MemberRepositoryTest {
         for (Member member : members) {
             System.out.println("member = " + member);
         }
+
+        // then
+    }
+
+    @Test
+    @DisplayName("")
+    public void returnType() throws Exception{
+        // given
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+        // when
+
+        List<Member> memberList = memberRepository.findListByUsername("AAA");
+        Member member = memberRepository.findMemberByUsername("AAA");
+        Optional<Member> memberOptional = memberRepository.findOptionalByUsername("AAA");
+
+
 
         // then
     }
