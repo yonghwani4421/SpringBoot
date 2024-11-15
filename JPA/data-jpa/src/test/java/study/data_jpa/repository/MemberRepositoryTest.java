@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.data_jpa.dto.MemberDto;
 import study.data_jpa.entity.Member;
+import study.data_jpa.entity.Team;
 
 import java.util.List;
 
@@ -20,6 +22,8 @@ class MemberRepositoryTest {
     @Autowired
     MemberRepository memberRepository;
 
+    @Autowired
+    TeamRepository teamRepository;
 
 
     @Test
@@ -114,6 +118,48 @@ class MemberRepositoryTest {
         Member findMember = result.get(0);
 
         assertThat(findMember).isEqualTo(m1);
+    }
+
+
+    @Test
+    @DisplayName("")
+    public void findUsernameList() throws Exception{
+        // given
+        Member m1 = new Member("AAA", 10);
+        Member m2 = new Member("BBB", 20);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+        // when
+
+        List<String> usernameList = memberRepository.findUsernameList();
+
+
+        for (String s : usernameList) {
+            System.out.println("s = " + s);
+        }
+
+        // then
+    }
+
+    @Test
+    @DisplayName("")
+    public void findMemberDto() throws Exception{
+        // given
+        Team team = new Team("teamA");
+        teamRepository.save(team);
+        Member m1 = new Member("AAA", 10);
+        m1.setTeam(team);
+        memberRepository.save(m1);
+
+        List<MemberDto> memberDto = memberRepository.findMemberDto();
+
+        for (MemberDto dto : memberDto) {
+            System.out.println("dto = " + dto);
+        }
+
+        // when
+
+        // then
     }
 
 }
