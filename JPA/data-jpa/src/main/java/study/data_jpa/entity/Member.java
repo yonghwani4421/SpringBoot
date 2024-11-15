@@ -2,11 +2,16 @@ package study.data_jpa.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.NamedQuery;
 
 @Getter @Setter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id","username","age"})
+@NamedQuery(
+        name = "Member.findByUsername",
+        query = "select m from Member m where m.username = :username"
+)
 public class Member {
     @Id @GeneratedValue
     @Column(name = "member_id")
