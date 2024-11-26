@@ -34,11 +34,11 @@ public class MemberController {
         Page<MemberDto> map = memberRepository.findAll(pageable).map(MemberDto::new);
         return map;
     }
-    @PostConstruct
-    public void init() {
-        for (int i = 0; i < 100; i++) {
-            memberRepository.save(new Member("user" + i, i));
-        }
-    }
+//    @PostConstruct
+//    public void init() {
+//        for (int i = 0; i < 100; i++) {
+//            memberRepository.save(new Member("user" + i, i));
+//        }
+//    }
 
 }
