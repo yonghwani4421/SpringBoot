@@ -1,5 +1,6 @@
 package study.query_dsl;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
@@ -16,14 +17,21 @@ import study.query_dsl.entity.Team;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
+import static study.query_dsl.entity.QMember.member;
 
 @SpringBootTest
 @Transactional
 public class QuerydslBasicTest {
     @Autowired
     EntityManager em;
+
+    JPAQueryFactory queryFactory;
+
+
     @BeforeEach
     public void before() {
+
+        queryFactory = new JPAQueryFactory(em);
         Team teamA = new Team("teamA");
         Team teamB = new Team("teamB");
 
@@ -40,6 +48,7 @@ public class QuerydslBasicTest {
         em.persist(member2);
         em.persist(member3);
         em.persist(member4);
+
     }
 
     @Test
@@ -57,15 +66,83 @@ public class QuerydslBasicTest {
     @DisplayName("query dsl 작성")
     public void startQuerydsl() throws Exception{
         // given
-        JPAQueryFactory queryFactory = new JPAQueryFactory(em);
-        QMember m = new QMember("m");
+//        QMember m = new QMember("m");
 
+//        QMember m = QMember.member;
+
+        // 스태틱 임포트 기능으로 깔끔하게 사용가능
         Member findMember = queryFactory
-                .select(m)
-                .from(m)
-                .where(m.username.eq("member1"))
+                .select(member)
+                .from(member)
+                .where(member.username.eq("member1"))
                 .fetchOne();
+        // then
         assertThat(findMember.getUsername()).isEqualTo("member1");
+    }
+
+
+    @Test
+    @DisplayName("member조건 조회")
+    public void search() throws Exception{
+        // given
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(member.username.eq("member1")
+                        .and(member.age.eq(10)))
+                .fetchOne();
+
+        // when
+
+        // then
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+
+
+    }
+
+
+    @Test
+    @DisplayName("member조건 조회")
+    public void searchAndParam() throws Exception{
+        // given
+        Member findMember = queryFactory
+                .selectFrom(member)
+                .where(
+                        member.username.eq("member1")
+                        ,member.age.eq(10)
+                )
+                .fetchOne();
+
+        // when
+
+        // then
+        assertThat(findMember.getUsername()).isEqualTo("member1");
+
+
+    }
+
+    @Test
+    @DisplayName("")
+    public void resultFetch() throws Exception{
+        // given
+//        List<Member> fetch = queryFactory.selectFrom(member)
+//                .fetch();
+//
+//        Member fetchOne = queryFactory.selectFrom(member)
+//                .fetchOne();
+//
+//
+//        Member fetchFirst = queryFactory.selectFrom(member)
+//                .fetchFirst();
+
+//        QueryResults<Member> results = queryFactory
+//                .selectFrom(member)
+//                .fetchResults();
+//
+//        results.getResults();
+//        List<Member> content = results.getResults();
+
+        long total = queryFactory.selectFrom(member)
+                .fetchCount();
 
         // when
 
