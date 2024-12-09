@@ -248,9 +248,6 @@ public class QuerydslBasicTest {
         assertThat(tuple.get(member.age.max())).isEqualTo(40);
         assertThat(tuple.get(member.age.min())).isEqualTo(10);
 
-        // when
-
-        // then
     }
 
     /**
@@ -267,7 +264,6 @@ public class QuerydslBasicTest {
                 .join(member.team, team)
                 .groupBy(team.name)
                 .fetch();
-        // when
 
         Tuple teamA = result.get(0);
         Tuple teamB = result.get(1);
@@ -277,7 +273,98 @@ public class QuerydslBasicTest {
         assertThat(teamB.get(team.name)).isEqualTo("teamB");
         assertThat(teamB.get(member.age.avg())).isEqualTo(35);
 
-        // then
+    }
+
+    /**
+     * 팀 A에 소속된 모든 회원
+     * @throws Exception
+     */
+    @Test
+    @DisplayName("join")
+    public void join() throws Exception{
+        // given
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .join(member.team, team)
+                .where(team.name.eq("teamA"))
+                .fetch();
+
+
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("member1","member2");
+    }
+
+    /**
+     * 세타 조인
+     * 회원의 이름이 팀 이름과 같은 회원 조회
+     * @throws Exception
+     */
+    @Test
+    @DisplayName("theta join")
+    public void theta_join() throws Exception{
+        em.persist(new Member("teamA"));
+        em.persist(new Member("teamB"));
+        em.persist(new Member("teamC"));
+
+        List<Member> result = queryFactory
+                .select(member)
+                .from(member, team)
+                .where(member.username.eq(team.name))
+                .fetch();
+
+        assertThat(result)
+                .extracting("username")
+                .containsExactly("teamA","teamB");
+    }
+
+    /**
+     *  예시 ) 회원과 팀을 조인하면서, 팀 이름이 teamA인 팀만 조인, 회원은 모두 조인
+     *  JPQL: selct m, t from Member m left join m.team t on t.name = 'teamA'
+     * @throws Exception
+     */
+
+    @Test
+    @DisplayName("")
+    public void QuerydslBasicTest() throws Exception{
+        // given
+
+        List<Tuple> result = queryFactory.select(member, team)
+                .from(member)
+                .leftJoin(member.team, team)
+                .on(team.name.eq("teamA"))
+                .fetch();
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
+
+    }
+
+    /**
+     * 연관관계가 없는 엔티티 외부 조인
+     * 회원의 이름이 팀 이름과 같은 대상 외부 조인
+     * @throws Exception
+     */
+    @Test
+    @DisplayName("join_on_no_relation")
+    public void join_on_no_relation() throws Exception{
+        em.persist(new Member("teamA"));
+        em.persist(new Member("teamB"));
+        em.persist(new Member("teamC"));
+
+        List<Tuple> result = queryFactory
+                .select(member,team)
+                .from(member)
+                .leftJoin(team).on(member.username.eq(team.name))
+                .fetch();
+
+
+        for (Tuple tuple : result) {
+            System.out.println("tuple = " + tuple);
+        }
+
+
     }
 
 
